@@ -1,19 +1,18 @@
 const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const fs = require('fs');
-let config = JSON.parse(fs.readFileSync("config.json", "utf8"));
-let yes = false;
+const config = require("config.json");
+let spawned = false
 const a = mineflayer.createBot({
 	host: 'minehut.com',
 	username: config.minecraft_email,
 	password: config.minecraft_password
 });
 
-a.on('spawn', () => {
+a.once('spawn', () => {
 	console.log('Spawned!');
-	if(!yes && config.server !== null) {
-		yes = true;
+	if(!spawned && config.server !== null) {
+		spawned = true
 		a.chat(`/join ${config.server}`);
 	}
 });

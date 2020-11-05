@@ -1,11 +1,10 @@
 const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const config = require("config.json");
 const a = mineflayer.createBot({
-	host: config.server,
-	username: config.minecraft_email,
-	password: config.minecraft_password
+	host: process.env.SERVER,
+	username: process.env.MINECRAFT_EMAIL,
+	password: process.env.MINECRAFT_PASS
 });
 
 a.once('spawn', () => {
@@ -17,12 +16,12 @@ a.on('message', (msg) => {
 	if(msg.toString() === '') return;
 	let message = msg.toString().replace(/(\`)/g, '');
 	if(`\`${message}\`` === '``') return;
-	bot.channels.cache.get(config.discord_channel_id).send(`\`${message}\``);
+	bot.channels.cache.get(process.env.DISCORD_CHANNEL).send(`\`${message}\``);
 });
 
 bot.on('message', (msg) => {
-	if(msg.author.id !== config.your_id) return;
+	if(msg.author.id !== process.env.YOUR_ID) return;
 	a.chat(msg.content)
 });
 
-bot.login(config.bot_token);
+bot.login(process.env.BOT_TOKEN);

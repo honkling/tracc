@@ -1,0 +1,25 @@
+{
+  "name": "tracc",
+  "version": "1.0.0",
+  "description": "A bot that logs Minecraft chat to a discord channel.",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "envy": "^2.0.0",
+    "mineflayer": "^2.34.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/untitledgeese/tracc.git"
+  },
+  "author": "untitledgeese",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/untitledgeese/tracc/issues"
+  },
+  "homepage": "https://github.com/untitledgeese/tracc#readme"
+}

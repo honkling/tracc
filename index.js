@@ -11,8 +11,6 @@ const a = mineflayer.createBot({
 	password: env.minecraftPass
 });
 
-console.log(env);
-
 a.once('spawn', () => {
 	console.log('Spawned!');
 });

@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "discord.js": "^12.4.1",
-    "envy": "^2.0.0",
+    "dotenv": "^8.2.0",
     "mineflayer": "^2.34.0"
   },
   "devDependencies": {},

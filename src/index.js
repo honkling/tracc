@@ -35,14 +35,16 @@ client.on('message', (msg) => {
 });
 
 bot.on('message', (msg) => {
-	if(msg.author.id !== process.env.YOUR_ID) return;
+	if(!tags.managers.includes(msg.author.id)) return;
 	if(msg.channel.id === process.env.DISCORD_CHANNEL) {
+		if(!msg.author.id !== process.env.YOUR_ID) return;
 		if(!msg.content.startsWith('!')) {
-            client.chat(msg.content);
-        } else {
-            for(const i of tags.list) {
-                if(msg.content === '!' + i) return client.chat(tags[i]);
-            }
+        		client.chat(msg.content);
+        	} else {
+        		for(const i of tags.list) {
+				if(msg.content === '!' + i) return client.chat(tags.tags[i]);
+			}
+		}
 	} else if(msg.content.startsWith('!')) {
 		let args = msg.content.split(' ');
 		let cmd = args[0].substr(1);
@@ -53,23 +55,44 @@ bot.on('message', (msg) => {
 				switch (args[0]) {
 					case 'set':
 						if(!tags.list.includes(args[1])) tags.list.push(args[1]);
-						tags[args[1]] = args.slice(2).join(" ");
+						tags.tags[args[1]] = args.slice(2).join(" ");
 						msg.channel.send('Successfully updated tag `' + args[1] + '`!');
 						fs.writeFileSync('./tags.json', JSON.stringify(tags));
 						break;
 					case 'delete':
 						if(!tags.list.includes(args[1])) return msg.channel.send('That tag doesn\'t exist!');
-                        tags.list.splice(tags.list.indexOf(args[1]), 1);
-                        delete tags[args[1]];
-                        fs.writeFileSync('./tags.json', JSON.stringify(tags));
-                        msg.channel.send('Successfully deleted tag `' + args[1] + '`!');
+                        			tags.list.splice(tags.list.indexOf(args[1]), 1);
+                        			delete tags.tags[args[1]];
+                        			fs.writeFileSync('./tags.json', JSON.stringify(tags));
+                        			msg.channel.send('Successfully deleted tag `' + args[1] + '`!');
 						break;
 					case 'list':
 						msg.channel.send(`Showing ${tags.list.length} tags:\n\n\`${tags.list.join("\`, \`")}\``);
 						break;
 					case 'source':
-						if(!tags[args[1]]) return msg.channel.send('That tag doesn\'t exist!');
-						msg.channel.send('```\n' + tags[args[1]] + '\n```');
+						if(!tags.list.includes(args[1])) return msg.channel.send('That tag doesn\'t exist!');
+						msg.channel.send('```\n' + tags.tags[args[1]] + '\n```');
+						break;
+					case 'manager':
+						switch (args[1]) {
+							case 'add':
+								const member = bot.users.cache.get(args[2].replace(/[^0-9}/g, ''));
+								if(!member) return msg.channel.send('Couldn\'t find that user!');
+								tags.managers.push(member.id);
+								fs.writeFileSync('./tags.json', JSON.stringify(tags));
+								msg.channel.send('Successfully added ' + member.tag + ' to the list of managers!');
+								break;
+							case 'del':
+								const member = bot.users.cache.get(args[2].replace(/[^0-9}/g, ''));
+								if(!member) return msg.channel.send('Couldn\'t find that user!');
+								if(!tags.managers.includes(member.id)) return msg.channel.send('That user isn\'t a manager!');
+								tags.managers.splice(tags.managers.indexOf(member.id), 1);
+								msg.channel.send('Successfully removed ' + member.tag + ' from the list of managers!');
+								break;
+							default:
+								msg.channel.send('Invalid command!');
+								break;
+						}
 						break;
 					default:
 						msg.channel.send('Invalid command!');

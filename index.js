@@ -29,7 +29,7 @@ bot.on('message', (msg) => {
             a.chat(msg.content);
         } else {
             for(const i of tags.list) {
-                if(msg.content.startsWith('!' + i)) return a.chat(tags[i]);
+                if(msg.content === '!' + i) return a.chat(tags[i]);
             }
         }
 	} else if(msg.content.startsWith('!')) {
@@ -55,6 +55,10 @@ bot.on('message', (msg) => {
 						break;
 					case 'list':
 						msg.channel.send(`Showing ${tags.list.length} tags:\n\n\`${tags.list.join("\`, \`")}\``);
+						break;
+					case 'source':
+						if(!tags[args[1]]) return msg.channel.send('That tag doesn\'t exist!');
+						msg.channel.send('```\n' + tags[args[1]] + '\n```');
 						break;
 					default:
 						msg.channel.send('Invalid command!');

@@ -1,37 +1,48 @@
 const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
 const fs = require('fs');
+const path = require('path');
 const tags = require('./tags.json');
-const envy = require('envy');
-const env = envy();
+let envpath = '';
+let current = path.resolve();
+// kinda weird solution, it'll do though.
+while(envpath === '' || current === '/') {
+	let files = fs.readdirSync(current);
+	if(files.includes('.env')) {
+		envpath = current + '.env';
+	} else {
+		current = path.resolve('..');
+	}
+}
+if(envpath === '') throw new Error('Couldn\'t locate a .env file!');
+require('dotenv').config({"path":envpath});
 const bot = new Discord.Client();
-const a = mineflayer.createBot({
-	host: env.server,
-	username: env.minecraftEmail,
-	password: env.minecraftPass
+const client = mineflayer.createBot({
+	host: process.env.SERVER,
+	username: process.env.MINECRAFT_EMAIL,
+	password: process.env.MINECRAFT_PASS
 });
 
-a.once('spawn', () => {
+client.once('spawn', () => {
 	console.log('Spawned!');
 });
 
-a.on('message', (msg) => {
+client.on('message', (msg) => {
 	console.log(msg.toString());
 	let message = msg.toString().replace(/(\`)/g, '');
 	if(msg.toString() === '' || `\`${message}\`` === '``') return;
-	bot.channels.cache.get(env.discordChannel).send(`\`${message}\``);
+	bot.channels.cache.get(process.env.DISCORD_CHANNEL).send(`\`${message}\``);
 });
 
 bot.on('message', (msg) => {
-	if(msg.author.id !== env.yourId) return;
-	if(msg.channel.id === env.discordChannel) {
+	if(msg.author.id !== process.env.YOUR_ID) return;
+	if(msg.channel.id === process.env.DISCORD_CHANNEL) {
 		if(!msg.content.startsWith('!')) {
-            a.chat(msg.content);
+            client.chat(msg.content);
         } else {
             for(const i of tags.list) {
-                if(msg.content === '!' + i) return a.chat(tags[i]);
+                if(msg.content === '!' + i) return client.chat(tags[i]);
             }
-        }
 	} else if(msg.content.startsWith('!')) {
 		let args = msg.content.split(' ');
 		let cmd = args[0].substr(1);
@@ -72,4 +83,4 @@ bot.on('message', (msg) => {
 	}
 });
 
-bot.login(env.botToken);
+bot.login(process.env.BOT_TOKEN);

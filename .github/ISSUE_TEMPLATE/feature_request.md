@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-description: Suggest a feature to be added to tracc
+about: Suggest a feature to be added to tracc
 labels: enhancement
 ---
 

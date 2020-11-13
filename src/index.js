@@ -45,7 +45,8 @@ client.on('message', (msg) => {
 bot.on('message', (msg) => {
 	if(msg.channel.id === process.env.DISCORD_CHANNEL) {
 		if(msg.author.id !== process.env.YOUR_ID) return;
-		if(!msg.content.startsWith('!')) {
+		let arguments = msg.content.split(' ');
+		if(!msg.content.startsWith('!') || (msg.content.startsWith('!') && tags.list[arguments[0].substr(1)])) {
         	client.chat(msg.content);
         } else {
         	for(const i of tags.list) {

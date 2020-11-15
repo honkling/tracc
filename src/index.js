@@ -17,29 +17,22 @@ while(envpath === '' || current === '/') {
 if(envpath === '') throw new Error('Couldn\'t locate a .env file!');
 require('dotenv').config({"path":envpath});
 const bot = new Discord.Client();
-const client = mineflayer.createBot({
+const bindEvents = require('./events');
+let client = mineflayer.createBot({
 	host: process.env.SERVER,
 	username: process.env.MINECRAFT_EMAIL,
-	password: process.env.MINECRAFT_PASS
+    password: process.env.MINECRAFT_PASS
 });
+bindEvents(client, bot);
+client.connectedToMCServer = true;
 
-client.once('spawn', () => {
-    console.log('Minecraft bot spawned!');
-});
 
-bot.on('ready', () => {
+bot.once('ready', () => {
     console.log('Discord bot ready!');
     if(!tags.managers.includes(process.env.YOUR_ID)) {
         tags.managers.push(process.env.YOUR_ID);
         fs.writeFileSync('./tags.json', JSON.stringify(tags));
     }
-});
-
-client.on('message', (msg) => {
-	console.log(msg.toString());
-	let message = msg.toString().replace(/(\`)/g, '');
-	if(msg.toString() === '' || `\`${message}\`` === '``') return;
-	bot.channels.cache.get(process.env.DISCORD_CHANNEL).send(`\`${message}\``);
 });
 
 bot.on('message', (msg) => {
@@ -108,7 +101,39 @@ bot.on('message', (msg) => {
 						msg.channel.send('Invalid command!');
 						break;
 				}
-				break;
+                break;
+            case 'leave':
+                if(!client.connectedToMCServer) return msg.channel.send('The bot isn\'t connected to any server!');
+                client.quit();
+                msg.channel.send('Disconnected from server!');
+                break;
+            case 'join':
+                if(client.connectedToMCServer) return msg.channel.send('The bot is already connected to a server!');
+                if(!args[0]) return msg.channel.send('No server provided!');
+                client = mineflayer.createBot({
+	                host: args[0],
+	                username: process.env.MINECRAFT_EMAIL,
+                    password: process.env.MINECRAFT_PASS
+                });
+                bindEvents(client, bot);
+                console.log('Bot connected to new server!');
+                client.connectedToMCServer = true;
+                return msg.channel.send('Connected to `' + args[0] + '`!');
+                break;
+            case 'switch':
+                if(!client.connectedToMCServer) return msg.channel.send('The bot isn\'t connected to any server!');
+                if(!args[0]) return msg.channel.send('No server provided!');
+                client.quit();
+                client = mineflayer.createBot({
+	                host: args[0],
+	                username: process.env.MINECRAFT_EMAIL,
+                    password: process.env.MINECRAFT_PASS
+                });
+                bindEvents(client, bot);
+                console.log('Bot connected to new server!');
+                client.connectedToMCServer = true;
+                return msg.channel.send('Connected to `' + args[0] + '`!');
+                break;
 			default:
 				msg.channel.send('Invalid command!');
 				break;

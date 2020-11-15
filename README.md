@@ -27,11 +27,20 @@ When configuring the bot (in .env), you will come across several options.
 You can make your account talk via the bot by typing in the channel specified in **DISCORD_CHANNEL**. To run a command, say **/(whatever command and whatever arguments)**
 
 You can create a tag with **!tag create (name) (content)**.
+
 You can delete a tag with **!tag delete (name)**.
+
 You can view a tag's source with **!tag source (name)**.
+
 You can view the list of tags with **!tag list**.
 
-Note that these tag commands must be ran in a channel other than **DISCORD_CHANNEL**.
+You can leave a server with **!leave**.
+
+You can join a server with **!join (ip)**, it requires you to run **!leave** first however.
+
+You can switch to another server with **!switch (ip)**, it does not require you to run **!leave**.
+
+Note that these commands must be ran in a channel other than **DISCORD_CHANNEL**.
 
 You can use a tag with **!(tag name)**. Note that it must be ran in **DISCORD_CHANNEL**.
 

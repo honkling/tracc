@@ -36,17 +36,7 @@ bot.once('ready', () => {
 });
 
 bot.on('message', (msg) => {
-	if(msg.channel.id === process.env.DISCORD_CHANNEL) {
-		if(msg.author.id !== process.env.YOUR_ID) return;
-		let arguments = msg.content.split(' ');
-		if(!msg.content.startsWith('!') || (msg.content.startsWith('!') && tags.list[arguments[0].substr(1)])) {
-        	client.chat(msg.content);
-        } else {
-        	for(const i of tags.list) {
-                if(msg.content === '!' + i) return client.chat(tags.tags[i]);
-            }
-		}
-	} else if(msg.content.startsWith('!')) {
+	if(msg.content.startsWith('!')) {
         if(!tags.managers.includes(msg.author.id)) return;
 		let args = msg.content.split(' ');
 		let cmd = args[0].substr(1);
@@ -135,9 +125,15 @@ bot.on('message', (msg) => {
                 return msg.channel.send('Connected to `' + args[0] + '`!');
                 break;
 			default:
-				msg.channel.send('Invalid command!');
+				if(tags.list[msg.content.split(' ')[0].substr(1)]) {
+					if(msg.content === '!' + i) return client.chat(tags.tags[i]);
+				else {
+					client.chat(msg.content);
+				}
 				break;
 		}
+	} else {
+		client.chat(msg.content);
 	}
 });
 

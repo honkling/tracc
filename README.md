@@ -30,12 +30,12 @@ You can create a tag with **!tag create (name) (content)**.<br> You can delete a
 
 You can leave a server with **!leave**.<br> You can join a server with **!join (ip)**, it requires you to run **!leave** first however.<br> You can switch to another server with **!switch (ip)**, it does not require you to run **!leave**.
 
-Note that these commands must be ran in a channel other than **DISCORD_CHANNEL**.<br> You can use a tag with **!(tag name)**. Note that it must be ran in **DISCORD_CHANNEL**.
+You can use a tag with **!(tag name)**. Note that it must be ran in **DISCORD_CHANNEL**.
 
 ## Contribution
 
 Looking to contribute to tracc? You've come to the right place to figure out how!
 
-Just head over to the [Issue Tracker](https://github.com/untitledgeese/tracc/issues/new), choose the template you want to use, fill in the fields required, and click **Submit new issue!**
+Just head over to the [Issue Tracker](https://github.com/untitledgeese/tracc/issues/new/choose), choose the template you want to use, fill in the fields required, and click **Submit new issue!**
 
 Pull requests are always welcome aswell.

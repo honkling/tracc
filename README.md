@@ -4,9 +4,9 @@
 
 ## Content
 
-- [Configuration](https://github.com/untitledgeese/tracc#configuration)
-- [Usage](https://github.com/untitledgeese/tracc#usage)
-- [How to Contribute](https://github.com/untitledgeese/tracc#contribution)
+- [Configuration](https://github.com/honkling/tracc#configuration)
+- [Usage](https://github.com/honkling/tracc#usage)
+- [How to Contribute](https://github.com/honkling/tracc#contribution)
 
 ## Configuration
 
@@ -36,6 +36,6 @@ You can use a tag with **!(tag name)**. Note that it must be ran in **DISCORD_CH
 
 Looking to contribute to tracc? You've come to the right place to figure out how!
 
-Just head over to the [Issue Tracker](https://github.com/untitledgeese/tracc/issues/new/choose), choose the template you want to use, fill in the fields required, and click **Submit new issue!**
+Just head over to the [Issue Tracker](https://github.com/honkling/tracc/issues/new/choose), choose the template you want to use, fill in the fields required, and click **Submit new issue!**
 
 Pull requests are always welcome aswell.

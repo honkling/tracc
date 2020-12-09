@@ -16,7 +16,7 @@ module.exports = (client, bot) => {
     client.on('message', (msg) => {
 	    console.log(msg.toString());
 	    let message = msg.toString().replace(/(\`)/g, '');
-	    if(msg.toString() === '' || `\`${message}\`` === '``') return;
+	    if(msg.toString() === (''||' ') || `\`${message}\`` === '``') return;
 	    bot.channels.cache.get(process.env.DISCORD_CHANNEL).send(`\`${message}\``);
     });
 }

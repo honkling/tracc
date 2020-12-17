@@ -6,7 +6,8 @@ module.exports = class ClientManager {
         let client = mineflayer.createBot({
             host: options.host,
             username: options.username,
-            password: options.password
+            password: options.password,
+			version: options.version || false
         });
         const bindEvents = require('./events');
         bindEvents(client, options.bot);

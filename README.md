@@ -22,6 +22,10 @@ When configuring the bot (in .env), you will come across several options.
 
 **SERVER** The server tracc joins on startup.
 
+**PREFIX** The prefix the discord bot uses
+
+**PING_ON_MENTION** Depicts whether or not the bot will ping you when you're mentioned in Minecraft. true/false
+
 ## Usage
 
 You can make your account talk via the bot by typing in the channel specified in **DISCORD_CHANNEL**. To run a command, say **/(whatever command and whatever arguments)**

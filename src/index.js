@@ -6,7 +6,7 @@ const tags = require('./tags.json');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const bot = new CommandoClient({
     owner: process.env.YOUR_ID,
-    prefix: process.env.PREFIX,
+    commandPrefix: process.env.PREFIX,
 });
 let client = new ClientManager({
     host: process.env.SERVER,
@@ -28,10 +28,10 @@ bot.once('ready', () => {
 bot.on('message', (msg) => {
     if(msg.author.bot) return;
     if(msg.channel.id !== process.env.DISCORD_CHANNEL) return;
-    if(msg.content.startsWith('!')) {
-        const tag = tags.list.filter(x => x === msg.content.split(' ')[0].substr(1));
+    if(msg.content.startsWith(process.env.PREFIX)) {
+        const tag = tags.list.filter(x => x === msg.content.split(' ')[0].substr(process.env.PREFIX.length));
         if(tag === []) return client.chat(msg.content);
-        return client.chat(tags.tags[tag[0]]);
+        else if(typeof tags.tags[tag[0]] === 'string') return client.chat(tags.tags[tag[0]]);
     }
     client.chat(msg.content);
 });

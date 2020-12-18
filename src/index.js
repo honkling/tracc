@@ -12,6 +12,7 @@ let client = new ClientManager({
     host: process.env.SERVER,
     username: process.env.MINECRAFT_EMAIL,
     password: process.env.MINECRAFT_PASS,
+    version: process.env.VERSION,
     bot: bot
 });
 bot.client = client;

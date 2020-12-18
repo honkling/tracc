@@ -15,8 +15,8 @@ module.exports = (client, bot) => {
 
     client.on('message', (msg) => {
 	    console.log(msg.toString());
-	    let message = msg.toString().replace(/(\`)/g, '');
-	    if(msg.toString() === (''||' ')) return;
-	    bot.channels.cache.get(process.env.DISCORD_CHANNEL).send(process.env.PING_ON_MENTION && (message.includes(client.username) || message.startsWith('From ')) ? `\`${message}\` <@${process.env.YOUR_ID}>` : `\`${message}\``);
+	    let message = '`' + msg.toString().replace(/(\`)/g, '').trim() + '`';
+	    if(message === '``') return;
+	    bot.channels.cache.get(process.env.DISCORD_CHANNEL).send(process.env.PING_ON_MENTION && (message.includes(client.username) || message.startsWith('From ')) ? `${message} <@${process.env.YOUR_ID}>` : `${message}`);
     });
 }

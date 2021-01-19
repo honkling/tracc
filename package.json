@@ -2,15 +2,18 @@
   "name": "tracc",
   "version": "1.0.0",
   "description": "A bot that logs Minecraft chat to a discord channel.",
-  "main": "index.js",
+  "main": "src/index.ts",
   "dependencies": {
-    "discord.js": "^12.4.1",
+    "@types/node": "^14.14.20",
+    "discord.js": "^12.5.1",
+    "discord.js-commando": "discordjs/Commando",
     "dotenv": "^8.2.0",
-    "mineflayer": "^2.34.0"
+    "mineflayer": "^2.40.1"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node ."
   },
   "repository": {
     "type": "git",

@@ -39,16 +39,6 @@ export class TraccClient {
 	handleDJS() {
 		djsEvents(this.bot);
 
-		this.bot.djs.registry
-			.registerDefaultTypes()
-			.registerGroups([['tracc', 'tracc commands']])
-			.registerDefaultGroups()
-			.registerDefaultCommands({
-				help: false,
-				unknownCommand: false,
-			})
-			.registerCommandsIn(join(__dirname, 'commands'));
-
 		this.bot.djs.login(process.env.BOT_TOKEN);
 	}
 }

@@ -1,22 +1,20 @@
-module.exports = (client, bot) => {
+module.exports = (client) => {
     client.on('spawn', () => {
-        console.log('Minecraft bot spawned!');
+        console.log('[BOT] Minecraft bot spawned!');
     });
 
     client.on('kicked', (reason) => {
-        console.log('Minecraft bot kicked from server! Reason: ' + reason);
+        console.log('[BOT] Minecraft bot kicked from server! Reason: ' + reason.toString());
         client.connectedToMCServer = false;
     });
 
     client.on('end', () => {
-        console.log('Minecraft bot disconnected from server!');
+        console.log('[BOT] Minecraft bot disconnected from server!');
         client.connectedToMCServer = false;
     });
 
     client.on('message', (msg) => {
-	    console.log(msg.toString());
-	    let message = '`' + msg.toString().replace(/(\`)/g, '').trim() + '`';
-	    if(message === '``') return;
-	    bot.channels.cache.get(process.env.DISCORD_CHANNEL).send(process.env.PING_ON_MENTION && (message.includes(client.username) || message.startsWith('From ')) ? `${message} <@${process.env.YOUR_ID}>` : `${message}`);
+		if(msg.toString().trim() === '') return;
+	    console.log(`[CHAT] ${msg.toString()}`);
     });
 }

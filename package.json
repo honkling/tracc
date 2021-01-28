@@ -4,9 +4,11 @@
   "description": "A bot that logs Minecraft chat to a discord channel.",
   "main": "index.js",
   "dependencies": {
-    "discord.js": "^12.4.1",
+    "discord.js": "^12.5.1",
+    "discord.js-commando": "github:discordjs/Commando",
     "dotenv": "^8.2.0",
-    "mineflayer": "^2.34.0"
+    "mineflayer": "^2.34.0",
+    "terminal-duplex": "^2.0.6"
   },
   "devDependencies": {},
   "scripts": {

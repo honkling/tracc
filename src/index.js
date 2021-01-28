@@ -1,53 +1,91 @@
-const { CommandoClient } = require('discord.js-commando');
+const Terminal = require('terminal-duplex');
 const ClientManager = require('./ClientManager');
 const fs = require('fs');
 const path = require('path');
 const tags = require('./tags.json');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
-const bot = new CommandoClient({
-    owner: process.env.YOUR_ID,
-    commandPrefix: process.env.PREFIX,
-});
 let client = new ClientManager({
     host: process.env.SERVER,
     username: process.env.MINECRAFT_EMAIL,
     password: process.env.MINECRAFT_PASS,
-    version: process.env.VERSION,
-    bot: bot
+	version: process.env.VERSION,
 });
-bot.client = client;
+const terminal = new Terminal(true);
+let exists;
 
+const write = content => fs.writeFileSync("./tags.json", content);
 
-bot.once('ready', () => {
-    console.log('Discord bot ready!');
-    if(!tags.managers.includes(process.env.YOUR_ID)) {
-        tags.managers.push(process.env.YOUR_ID);
-        fs.writeFileSync('./tags.json', JSON.stringify(tags));
-    }
-});
+const listener = input => {
+	if(input.startsWith(process.env.PREFIX)) {
+		const args = input.split(" ");
+		const cmd = args[0].substr(process.env.PREFIX.length);
+		args.shift();
+		switch (cmd) {
+			case 'tag':
+				if(!args[1] && args[0] === ('set'||'source'||'delete')) console.log(`[CMD] Please specify a tag.`);
+				switch (args[0]) {
+					case 'set':
+						if(!args[2]) console.log(`[CMD] Please specify a content.`);
+						exists = tags.list.includes(args[1]);
+						if(!exists) tags.list.push(args[1]);
+						tags.tags[args[1]] = args.slice(2).join(' ');
+						write(JSON.stringify(tags));
+						console.log(`[CMD] Successfully set content of '${args[1]}'.`);
+						return;
+					case 'source':
+						exists = tags.list.includes(args[1]);
+						if(!exists) return console.log(`[CMD] Tag '${args[1]}' does not exist!`);
+						const content = tags.tags[args[1]];
+						console.log(`[CMD] ${content.replace(/\\n/g, "\n[CMD] ")}`);
+						return;
+					case 'delete':
+						exists = tags.list.includes(args[1]);
+						if(!exists) return console.log(`[CMD] Tag '${args[1]}' does not exist!`);
+						delete tags.tags[args[1]];
+						write(JSON.stringify(tags));
+						console.log(`[CMD] Successfully deleted '${args[1]}'.`);
+						return;
+					default:
+						console.log(`[CMD] Invalid subcommand '${args[0]}' for 'tag' command. Subcommands: set, source, delete`);
+						return;
+				}
+			case 'tags':
+				console.log(`[CMD] List of tags:\n[CMD] ${tags.list.join(', ')}`);
+				return;
+			case 'join':
+				if(client.connectedToMCServer) return console.log(`[CMD] Bot is still connected to a server, please leave it first.`);
+				if(!args[0]) return console.log(`[CMD] Please specify a server to join.`);
+				client = new ClientManager({
+            		host: args[0],
+            		username: process.env.MINECRAFT_EMAIL,
+					password: process.env.MINECRAFT_PASS,
+				});
+				return;
+			case 'leave':
+				if(!client.connectedToMCServer) return console.log(`[CMD] Bot isn't connected to a server!`);
+				client.quit();
+				client.connectedToMCServer = false;
+				return;
+			case 'switch':
+				if(!args[0]) return console.log(`[CMD] Please specify a server to join.`);
+				client = new ClientManager({
+            		host: args[0],
+            		username: process.env.MINECRAFT_EMAIL,
+					password: process.env.MINECRAFT_PASS,
+				});
+				return;
+			case 'exit':
+				client.quit();
+				process.exit();
+				return;
+			default:
+				exists = tags.list.includes(cmd);
+				if(!exists) client.chat(input);
+				else client.chat(tags.tags[cmd]);
+		}
+	} else {
+		client.chat(input);
+	}
+}
 
-bot.on('message', (msg) => {
-    if(msg.author.bot) return;
-    if(msg.channel.id !== process.env.DISCORD_CHANNEL) return;
-    if(msg.content.startsWith(process.env.PREFIX)) {
-        const tag = tags.list.filter(x => x === msg.content.split(' ')[0].substr(process.env.PREFIX.length));
-        if(tag === []) return client.chat(msg.content);
-        else if(typeof tags.tags[tag[0]] === 'string') return client.chat(tags.tags[tag[0]]);
-    }
-    client.chat(msg.content);
-});
-
-bot.registry
-    .registerDefaultTypes()
-    .registerGroups([
-        ['tag', 'Tags'],
-        ['mc', 'Minecraft'],
-    ])
-    .registerDefaultGroups()
-    .registerDefaultCommands({
-        help: false,
-        unknownCommand: false,
-    })
-    .registerCommandsIn(path.join(__dirname, 'commands'));
-
-bot.login(process.env.BOT_TOKEN);
+terminal.listen(listener);

@@ -1,25 +1,18 @@
 {
-  "name": "tracc",
+  "name": "tracc-server",
   "version": "1.0.0",
-  "description": "A bot that logs Minecraft chat to a discord channel.",
+  "description": "",
   "main": "index.js",
-  "dependencies": {
-    "discord.js": "^12.4.1",
-    "dotenv": "^8.2.0",
-    "mineflayer": "^2.34.0"
-  },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd src; node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/untitledgeese/tracc.git"
-  },
-  "author": "untitledgeese",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/untitledgeese/tracc/issues"
-  },
-  "homepage": "https://github.com/untitledgeese/tracc#readme"
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mineflayer": "^2.41.0",
+    "socket.io": "^3.1.0"
+  }
 }

@@ -26,6 +26,8 @@ When configuring the bot (in .env), you will come across several options.
 
 **PING_ON_MENTION** Depicts whether or not the bot will ping you when you're mentioned in Minecraft. true/false
 
+**MICROSOFT_ACCOUNT** true/false, determines if tracc should use Microsoft authentication or not.
+
 **VERSION** (optional) The version of Minecraft the bot should join with
 
 ## Usage

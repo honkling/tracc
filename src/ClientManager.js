@@ -7,7 +7,8 @@ module.exports = class ClientManager {
             host: options.host,
             username: options.username,
             password: options.password,
-            version: options.version || false
+            version: options.version || false,
+            auth: options.microsoft ? 'microsoft' : 'mojang',
         });
         const bindEvents = require('./events');
         bindEvents(client, options.bot);

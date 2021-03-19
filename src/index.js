@@ -13,6 +13,7 @@ let client = new ClientManager({
     username: process.env.MINECRAFT_EMAIL,
     password: process.env.MINECRAFT_PASS,
     version: process.env.VERSION,
+    microsoft: process.env.MICROSOFT_ACCOUNT === 'true' || process.env.MICROSOFT_ACCOUNT === 'false' ? (Boolean(process.env.MICROSOFT_ACCOUNT) ? "microsoft" : "mojang") : false,
     bot: bot
 });
 bot.client = client;
